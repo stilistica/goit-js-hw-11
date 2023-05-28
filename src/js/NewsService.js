@@ -36,14 +36,6 @@ export default class NewsService {
     this.page += 1;
   }
 
-  get query() {
-    return this.searchQuery;
-  }
-
-  set query(newQuery) {
-    this.searchQuery = newQuery;
-  }
-
   get hits() {
     return this.totalHits;
   }
