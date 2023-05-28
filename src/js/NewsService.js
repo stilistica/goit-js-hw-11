@@ -14,10 +14,10 @@ export default class NewsService {
   async getNews() {
     try {
       const { data } = await axios.get(
-        `${URL}?key=${API_KEY}&q=${this.searchQuery}&image_type='photo'&orientation='horizontal'&safesearch=true&page=${this.page}&per_page=40`
+        `${URL}?key=${API_KEY}&q=${this.searchQuery}&image_type='photo'&orientation='horizontal'&page=${this.page}&per_page=40`
       );
       this.incrementPage();
-      return data.articles;
+      return data.hits;
     } catch (err) {
       console.error(err);
       Report.failure(
@@ -25,10 +25,6 @@ export default class NewsService {
         'Sorry, there are no images matching your search query. Please try again.',
         'Ok'
       );
-      Report.success('Title', 'Message', 'Button Text', {
-        width: '360px',
-        svgSize: '120px',
-      });
     }
   }
 
@@ -44,8 +40,8 @@ export default class NewsService {
     return this.searchQuery;
   }
 
-  set query(newSearchQuery) {
-    this.searchQuery = newSearchQuery;
+  set query(newQuery) {
+    this.searchQuery = newQuery;
   }
 
   get hits() {
@@ -56,4 +52,3 @@ export default class NewsService {
     this.totalHits = newTotalHits;
   }
 }
-
