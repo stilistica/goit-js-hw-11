@@ -1,4 +1,6 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 import NewsService from './js/NewsService.js';
 import LoadMoreBtn from './js/LoadMoreBtn.js';
@@ -10,8 +12,8 @@ const refs = {
 
 const newsService = new NewsService();
 const loadMoreBtn = new LoadMoreBtn({
-  selector: '#loadMore',
-  isHidden: true,
+  selector: '.load-more',
+  hidden: true,
 });
 
 refs.form.addEventListener('submit', onSubmit);
@@ -34,19 +36,24 @@ function onSubmit(event) {
 }
 
 async function fetchArticles() {
-  loadMoreBtn.disable();
+	loadMoreBtn.disable();
   const curentPage = newsService.page;
   try {
     const articlesMarkup = await getArticlesMarkup();
     if (articlesMarkup === '') {
       throw new Error('No data');
-    }
-    if (curentPage === 1) {
-      Notify.success(`Hooray! We found ${newsService.hits} images.`);
-      loadMoreBtn.show();
-      await getArticlesMarkup();
-    }
-    updateNewsList(articlesMarkup);
+		}
+      if (curentPage === 1) {
+        Notify.success(`Hooray! We found ${newsService.hits} images.`);
+        loadMoreBtn.show();
+        await getArticlesMarkup();
+      }
+		updateNewsList(articlesMarkup);
+		if (newsService.page * 40 >= newsService.hits) {
+      loadMoreBtn.hide();
+      Notify.info("We're sorry, but you've reached the end of search results.");
+		}
+		initializeLightbox();
   } catch (err) {
     onError(err);
     Notify.failure(
@@ -112,3 +119,25 @@ function onError(err) {
   console.error(err);
   loadMoreBtn.hide();
 }
+
+function initializeLightbox() {
+  const lightbox = new SimpleLightbox('.gallery__item', {
+    captionDelay: 250,
+    captionsData: 'alt',
+    enableKeyboard: true,
+  });
+}
+
+
+//! Infinite scroll
+// function handleScroll() {
+//   const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+//   if (scrollTop + clientHeight >= scrollHeight - 5) {
+//     fetchArticles();
+//   }
+// }
+
+// window.addEventListener("scroll", handleScroll);
+
+
