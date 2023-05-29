@@ -46,7 +46,7 @@ async function fetchArticles() {
       if (curentPage === 1) {
         Notify.success(`Hooray! We found ${newsService.hits} images.`);
         loadMoreBtn.show();
-        await getArticlesMarkup();
+        // await getArticlesMarkup();
       }
 		updateNewsList(articlesMarkup);
 		if (newsService.page * 40 >= newsService.hits) {
