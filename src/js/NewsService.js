@@ -14,7 +14,7 @@ export default class NewsService {
   async getNews() {
     try {
       const { data } = await axios.get(
-        `${URL}?key=${API_KEY}&q=${this.searchQuery}&image_type='photo'&orientation='horizontal'&safesearch="true"&page=${this.page}&per_page=40`
+        `${URL}?key=${API_KEY}&q=${this.searchQuery}&image_type='photo'&orientation='horizontal'&safesearch=true&page=${this.page}&per_page=40`
       );
       this.totalHits = data.totalHits;
       this.incrementPage();
