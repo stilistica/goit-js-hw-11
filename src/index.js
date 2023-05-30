@@ -21,8 +21,11 @@ loadMoreBtn.button.addEventListener('click', fetchArticles);
 
 function onSubmit(event) {
   event.preventDefault();
+  event.stopPropagation();
+  
   const form = event.currentTarget;
   const value = form.elements.searchQuery.value.trim();
+
 
   if (value === '') alert('No value!');
   else {
@@ -49,10 +52,10 @@ async function fetchArticles() {
         // await getArticlesMarkup();
       }
 		updateNewsList(articlesMarkup);
-		if (newsService.page * 40 >= newsService.hits) {
+		if (!newsService.hasMorePhotos()) {
       loadMoreBtn.hide();
       Notify.info("We're sorry, but you've reached the end of search results.");
-		}
+    }
 		initializeLightbox();
   } catch (err) {
     onError(err);

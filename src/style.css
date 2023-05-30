@@ -15,14 +15,13 @@ button.hidden {
 }
 input,
 button {
-  border-radius: 15px;
   padding: 10px 20px;
   font-size: 30px;
 }
 input[type="submit"],
 button {
   border: none;
-  background-color: rgba(45, 45, 233, 0.731);
+  background-color: #000;
   color: white;
   cursor: pointer;
 }
